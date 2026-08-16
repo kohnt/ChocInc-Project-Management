@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProjectFlow — Project Management</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/utilities.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- ── Sidebar ─────────────────────────────────── -->
+    <aside id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <span class="brand-icon">◈</span>
+          <span class="brand-name">ProjectFlow</span>
+        </div>
+        <button id="sidebar-toggle" class="icon-btn" data-i18n-title="nav.views">&#9776;</button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <span class="nav-label" data-i18n="nav.views">Views</span>
+        <button class="nav-item active" data-view="kanban">
+          <span class="nav-icon">⊞</span><span class="nav-text" data-i18n="nav.kanban">Kanban</span>
+        </button>
+        <button class="nav-item" data-view="gantt">
+          <span class="nav-icon">▤</span><span class="nav-text" data-i18n="nav.gantt">Gantt</span>
+        </button>
+        <button class="nav-item" data-view="calendar">
+          <span class="nav-icon">&#128197;</span><span class="nav-text" data-i18n="nav.calendar">Calendar</span>
+        </button>
+        <button class="nav-item" data-view="timeline">
+          <span class="nav-icon">&#9776;</span><span class="nav-text" data-i18n="nav.timeline">Timeline</span>
+        </button>
+        <button class="nav-item" data-view="eisenhower">
+          <span class="nav-icon">⊟</span><span class="nav-text" data-i18n="nav.matrix">Matrix</span>
+        </button>
+        <button class="nav-item" data-view="dashboard">
+          <span class="nav-icon">◉</span><span class="nav-text" data-i18n="nav.dashboard">Dashboard</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-header">
+          <span class="nav-label" data-i18n="nav.projects">Projects</span>
+          <button class="icon-btn" id="new-project-btn" data-i18n-title="sidebar.new_project">+</button>
+        </div>
+        <div id="sidebar-projects"></div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-header">
+          <span class="nav-label" data-i18n="nav.team">Team</span>
+          <button class="icon-btn" id="new-member-btn" data-i18n-title="sidebar.add_member">+</button>
+        </div>
+        <div id="sidebar-team"></div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div id="sidebar-profile" class="sidebar-profile-card" onclick="Components.settingsModal()" title="My Profile — click to edit">
+          <div class="avatar avatar-sm" id="sb-profile-avatar" style="background:#4A90E2">?</div>
+          <div class="sb-profile-text">
+            <span id="sb-profile-name" class="sb-profile-name">Set your profile</span>
+            <span id="sb-profile-desg" class="sb-profile-desg">Click Settings to configure</span>
+          </div>
+        </div>
+        <button class="sidebar-action" id="report-btn">&#128438; <span data-i18n="sidebar.report">Report</span></button>
+        <button class="sidebar-action" id="import-btn">&#8593; <span data-i18n="sidebar.import">Import</span></button>
+        <button class="sidebar-action" id="export-btn">&#8595; <span data-i18n="sidebar.export">Export</span></button>
+        <button class="sidebar-action" id="settings-btn">&#9881; <span data-i18n="sidebar.settings">Settings</span></button>
+        <button class="sidebar-action" id="theme-toggle-btn">&#127769; <span id="theme-toggle-text" data-i18n="sidebar.dark_mode">Dark Mode</span></button>
+        <div class="sidebar-brand-credit">
+          Designed &amp; Developed by<br>
+          <strong>Creative Ways Tech</strong><br>
+          <span class="sbc-heart">With Care &#10084;&#65039;</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Main Content ─────────────────────────────── -->
+    <main id="main-content">
+      <header id="top-bar">
+        <div class="top-bar-left">
+          <button id="mobile-menu-btn" class="icon-btn">&#9776;</button>
+          <h1 id="view-title">Kanban Board</h1>
+        </div>
+        <div class="top-bar-center">
+          <div class="search-box">
+            <span class="search-icon">&#128269;</span>
+            <input type="text" id="search-input" data-i18n-placeholder="topbar.search_placeholder" placeholder="Search tasks…" autocomplete="off">
+            <button class="search-clear hidden" id="search-clear">&#10005;</button>
+          </div>
+        </div>
+        <div class="top-bar-right">
+          <div id="filter-chips"></div>
+          <button class="btn btn-primary" id="new-task-btn" data-i18n="topbar.new_task">+ New Task</button>
+          <div id="save-indicator" class="save-indicator hidden" data-i18n="topbar.saved">Saved ✓</div>
+        </div>
+      </header>
+
+      <!-- Filter Bar -->
+      <div id="filter-bar">
+        <div class="filter-bar-inner">
+          <select id="filter-project" class="filter-select">
+            <option value="" data-i18n="filter.all_projects">All Projects</option>
+          </select>
+          <select id="filter-status" class="filter-select">
+            <option value=""          data-i18n="filter.all_statuses">All Statuses</option>
+            <option value="todo"      data-i18n="status.todo">To Do</option>
+            <option value="in_progress" data-i18n="status.in_progress">In Progress</option>
+            <option value="review"    data-i18n="status.review">In Review</option>
+            <option value="done"      data-i18n="status.done">Done</option>
+            <option value="blocked"   data-i18n="status.blocked">Blocked</option>
+          </select>
+          <select id="filter-priority" class="filter-select">
+            <option value=""         data-i18n="filter.all_priorities">All Priorities</option>
+            <option value="critical" data-i18n="priority.critical">Critical</option>
+            <option value="high"     data-i18n="priority.high">High</option>
+            <option value="medium"   data-i18n="priority.medium">Medium</option>
+            <option value="low"      data-i18n="priority.low">Low</option>
+          </select>
+          <select id="filter-assignee" class="filter-select">
+            <option value="" data-i18n="filter.all_members">All Members</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" id="clear-filters-btn" data-i18n="filter.clear">Clear Filters</button>
+        </div>
+      </div>
+
+      <div id="view-container"></div>
+    </main>
+
+    <!-- ── Detail Panel ──────────────────────────────── -->
+    <aside id="detail-panel" class="hidden">
+      <div class="detail-panel-header">
+        <h2 class="detail-panel-title" data-i18n="detail.title">Task Detail</h2>
+        <button class="icon-btn" id="close-detail-btn">&#10005;</button>
+      </div>
+      <div id="detail-content"></div>
+    </aside>
+  </div>
+
+  <!-- ── Modals ───────────────────────────────────────── -->
+  <div id="modal-overlay" class="hidden" onclick="Components.handleOverlayClick(event)">
+    <div id="modal-container" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <h2 id="modal-title"></h2>
+        <button class="icon-btn" onclick="Components.closeModal()">&#10005;</button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ── Toast Container ─────────────────────────────── -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <!-- ── Context Menu ────────────────────────────────── -->
+  <div id="context-menu" class="hidden">
+    <div id="context-menu-items"></div>
+  </div>
+
+  <!-- Hidden file input for JSON import -->
+  <input type="file" id="file-import" accept=".json" style="display:none">
+
+  <!-- ── Scripts (load order matters) ───────────────── -->
+  <script src="js/config.js"></script>
+  <script src="js/utils/i18n.js"></script>
+  <script src="js/utils/id.js"></script>
+  <script src="js/utils/format.js"></script>
+  <script src="js/utils/helpers.js"></script>
+  <script src="js/storage/db.js"></script>
+  <script src="js/modules/projects.js"></script>
+  <script src="js/modules/tasks.js"></script>
+  <script src="js/modules/teams.js"></script>
+  <script src="js/modules/filters.js"></script>
+  <script src="js/modules/report.js"></script>
+  <script src="js/ui/components.js"></script>
+  <script src="js/views/kanban.js"></script>
+  <script src="js/views/gantt.js"></script>
+  <script src="js/views/calendar.js"></script>
+  <script src="js/views/timeline.js"></script>
+  <script src="js/views/eisenhower.js"></script>
+  <script src="js/views/dashboard.js"></script>
+  <script src="js/ui/render.js"></script>
+  <script src="js/ui/events.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

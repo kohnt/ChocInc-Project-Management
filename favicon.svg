@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Navy background -->
+  <rect width="32" height="32" rx="6" fill="#003366"/>
+
+  <!-- Column 1 — header + 3 cards -->
+  <rect x="4"  y="5"  width="6" height="2"   rx="1" fill="#4A90E2"/>
+  <rect x="4"  y="9"  width="6" height="3.5" rx="1" fill="rgba(255,255,255,0.90)"/>
+  <rect x="4"  y="14" width="6" height="3.5" rx="1" fill="rgba(255,255,255,0.60)"/>
+  <rect x="4"  y="19" width="6" height="3.5" rx="1" fill="rgba(255,255,255,0.35)"/>
+
+  <!-- Column 2 — header + 2 cards -->
+  <rect x="13" y="5"  width="6" height="2"   rx="1" fill="#4A90E2"/>
+  <rect x="13" y="9"  width="6" height="3.5" rx="1" fill="rgba(255,255,255,0.90)"/>
+  <rect x="13" y="14" width="6" height="7"   rx="1" fill="rgba(255,255,255,0.60)"/>
+
+  <!-- Column 3 — header + 1 card -->
+  <rect x="22" y="5"  width="6" height="2"   rx="1" fill="#4A90E2"/>
+  <rect x="22" y="9"  width="6" height="5"   rx="1" fill="rgba(255,255,255,0.90)"/>
+</svg>
